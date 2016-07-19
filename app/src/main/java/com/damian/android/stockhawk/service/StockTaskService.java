@@ -120,12 +120,13 @@ public class StockTaskService extends GcmTaskService {
 
         if (urlStringBuilder != null) {
             urlString = urlStringBuilder.toString();
+            Log.d(LOG_TAG, urlString);
             try {
                 getResponse = fetchData(urlString);
                 result = GcmNetworkManager.RESULT_SUCCESS;
 
                 if (Utils.isValidStock(getResponse) == true) {
-                    //If stock name is valid, update and cache stock data.
+                    //If stock name(s) is/are valid, update and cache stock data.
                     try {
                         ContentValues contentValues = new ContentValues();
                         // update ISCURRENT to 0 (false) so new data is current
@@ -145,7 +146,7 @@ public class StockTaskService extends GcmTaskService {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mContext, "Please enter" +
+                            Toast.makeText(mContext, "Stock not found. Please enter" +
                                     " a valid stock name!", Toast.LENGTH_LONG).show();
                         }
                     });

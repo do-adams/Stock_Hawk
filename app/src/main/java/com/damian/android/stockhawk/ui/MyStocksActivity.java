@@ -92,6 +92,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     public void onItemClick(View v, int position) {
                         //TODO:
                         // do something on item click
+                        startActivity(new Intent(MyStocksActivity.this, LineGraphActivity.class));
                     }
                 }));
         recyclerView.setAdapter(mCursorAdapter);
