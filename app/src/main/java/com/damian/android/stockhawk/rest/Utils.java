@@ -23,6 +23,47 @@ public class Utils {
 
     public static boolean showPercent = true;
 
+    /**
+     * Performs a check on the Yahoo Stock JSON data
+     * to determine whether the user-generated stock is indeed a valid stock.
+     * Returns true if valid or false if invalid.
+     */
+    public static boolean isValidStock(String JSON) {
+        JSONObject jsonObject = null;
+        JSONArray resultsArray = null;
+
+        //Queries the "Ask" price key value to determine if the stock is valid.
+        try {
+            jsonObject = new JSONObject(JSON);
+            if (jsonObject != null && jsonObject.length() != 0) {
+                jsonObject = jsonObject.getJSONObject("query");
+                int count = Integer.parseInt(jsonObject.getString("count"));
+
+                if (count == 1) {
+                    jsonObject = jsonObject.getJSONObject("results")
+                            .getJSONObject("quote");
+                    if (jsonObject.getString("Ask").equals("null")) {
+                        return false;
+                    }
+                } else {
+                    resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+
+                    if (resultsArray != null && resultsArray.length() != 0) {
+                        for (int i = 0; i < resultsArray.length(); i++) {
+                            jsonObject = resultsArray.getJSONObject(i);
+                            if (jsonObject.getString("Ask").equals("null")) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "String to JSON failed: " + e);
+        }
+        return true;
+    }
+
     public static ArrayList quoteJsonToContentVals(String JSON) {
         ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
         JSONObject jsonObject = null;
