@@ -49,11 +49,18 @@
         <receiver android:name=".widget.StocksWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.ACTION_WIDGET_CLICK"/>
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/stocks_widget_provider_info"/>
         </receiver>
+
+        <!--Service for binding ListView items for the Widget-->
+        <service
+            android:name=".widget.ListViewWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
     </application>
 
 </manifest>
