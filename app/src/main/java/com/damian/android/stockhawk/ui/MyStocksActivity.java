@@ -12,9 +12,9 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -23,6 +23,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -34,11 +36,11 @@ import com.damian.android.stockhawk.rest.RecyclerViewItemClickListener;
 import com.damian.android.stockhawk.rest.Utils;
 import com.damian.android.stockhawk.service.StockIntentService;
 import com.damian.android.stockhawk.service.StockTaskService;
+import com.damian.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
-import com.damian.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -90,9 +92,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 new RecyclerViewItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        //TODO:
-                        // do something on item click
-                        startActivity(new Intent(MyStocksActivity.this, LineGraphActivity.class));
+                        // So much casting makes you feel like a wizard!
+                        String stockName = (String) ((TextView) ((LinearLayout) v).getChildAt(0)).getText();
+                        Intent intent = new Intent(MyStocksActivity.this, LineGraphActivity.class);
+                        intent.putExtra("RecyclerItemStockName", stockName);
+                        startActivity(intent);
                     }
                 }));
         recyclerView.setAdapter(mCursorAdapter);

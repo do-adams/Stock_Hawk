@@ -126,7 +126,7 @@ public class StockTaskService extends GcmTaskService {
                 result = GcmNetworkManager.RESULT_SUCCESS;
 
                 if (Utils.isValidStock(getResponse) == true) {
-                    //If stock name(s) is/are valid, update and cache stock data.
+                    // If stock name(s) is/are valid, update and cache stock data.
                     try {
                         ContentValues contentValues = new ContentValues();
                         // update ISCURRENT to 0 (false) so new data is current
@@ -135,13 +135,18 @@ public class StockTaskService extends GcmTaskService {
                             mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                                     null, null);
                         }
+                        /*
+                         A better database insertion/update method should be possible.
+                         This database will apparently keep growing bigger and bigger over time
+                         with old redundant data?
+                        */
                         mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                                 Utils.quoteJsonToContentVals(getResponse));
                     } catch (RemoteException | OperationApplicationException e) {
                         Log.e(LOG_TAG, "Error applying batch insert", e);
                     }
                 } else {
-                    //Grabs the UI thread to post "invalid stock" msg.
+                    // Grabs the UI thread to post "invalid stock" msg.
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
                         @Override

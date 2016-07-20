@@ -32,7 +32,7 @@ public class Utils {
         JSONObject jsonObject = null;
         JSONArray resultsArray = null;
 
-        //Queries the "Ask" price key value to determine if the stock is valid.
+        // Queries the "Ask" price key value to determine if the stock is valid.
         try {
             jsonObject = new JSONObject(JSON);
             if (jsonObject != null && jsonObject.length() != 0) {
@@ -132,6 +132,10 @@ public class Utils {
             } else {
                 builder.withValue(QuoteColumns.ISUP, 1);
             }
+            builder.withValue(QuoteColumns.FIFTY_DAYS_PRICE_AVERAGE,
+                    truncateBidPrice(jsonObject.getString("FiftydayMovingAverage")));
+            builder.withValue(QuoteColumns.TWO_HUNDRED_DAYS_PRICE_AVERAGE,
+                    truncateBidPrice(jsonObject.getString("TwoHundreddayMovingAverage")));
 
         } catch (JSONException e) {
             e.printStackTrace();

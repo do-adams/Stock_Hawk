@@ -44,4 +44,12 @@ public class QuoteColumns {
     @NotNull
     public static final String ISCURRENT = "is_current";
 
+    @DataType(DataType.Type.TEXT)
+    @NotNull
+    public static final String FIFTY_DAYS_PRICE_AVERAGE = "fifty_days_price_average";
+
+    @DataType(DataType.Type.TEXT)
+    @NotNull
+    public static final String TWO_HUNDRED_DAYS_PRICE_AVERAGE = "two_hundred_days_price_average";
+
 }
