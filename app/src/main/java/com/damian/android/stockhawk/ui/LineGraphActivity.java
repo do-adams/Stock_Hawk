@@ -27,10 +27,10 @@ import java.util.List;
 public class LineGraphActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = LineGraphActivity.class.getSimpleName();
+    private static final int CHART_AXIS_OFFSET = 5;
+
     private TextView mTitleLineChart;
     private LineChartView mLineChartView;
-
-    private int mChartAxisOffset = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class LineGraphActivity extends AppCompatActivity {
                     if (n > max)
                         max = n;
                 }
-                mLineChartView.setAxisBorderValues(min - mChartAxisOffset, max + mChartAxisOffset);
+                mLineChartView.setAxisBorderValues(min - CHART_AXIS_OFFSET, max + CHART_AXIS_OFFSET);
 
                 // Prep and display the Line Chart.
                 mLineChartView.addData(dataSet);
