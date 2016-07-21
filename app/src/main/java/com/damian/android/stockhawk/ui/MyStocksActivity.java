@@ -43,8 +43,17 @@ import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    // Intent extras keys and values for LineGraphActivity.
     public static final String STOCK_NAME_KEY = "RecyclerItemStockName";
+
+    // Intent extras keys and values for StockIntentService.
     public static final String STOCK_SERVICE_TAG_KEY = "tag";
+    public static final String STOCK_SERVICE_SYMBOL_KEY = "symbol";
+    public static final String STOCK_SERVICE_INIT_VALUE = "init";
+    public static final String STOCK_SERVICE_ADD_VALUE = "add";
+
+    // Tag for the Periodic Task for GCM.
+    public static final String PERIODIC_TASK_TAG = "periodic";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -79,7 +88,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mServiceIntent = new Intent(this, StockIntentService.class);
         if (savedInstanceState == null) {
             // Run the initialize task service so that some stocks appear upon an empty database
-            mServiceIntent.putExtra(STOCK_SERVICE_TAG_KEY, "init");
+            mServiceIntent.putExtra(STOCK_SERVICE_TAG_KEY, STOCK_SERVICE_INIT_VALUE);
             if (isConnected) {
                 startService(mServiceIntent);
             } else {
@@ -131,8 +140,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                         return;
                                     } else {
                                         // Add the stock to DB
-                                        mServiceIntent.putExtra(STOCK_SERVICE_TAG_KEY, "add");
-                                        mServiceIntent.putExtra("symbol", input.toString());
+                                        mServiceIntent.putExtra(STOCK_SERVICE_TAG_KEY, STOCK_SERVICE_ADD_VALUE);
+                                        mServiceIntent.putExtra(STOCK_SERVICE_SYMBOL_KEY, input.toString());
                                         startService(mServiceIntent);
                                     }
                                 }
@@ -153,7 +162,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         if (isConnected) {
             long period = 3600L;
             long flex = 10L;
-            String periodicTag = "periodic";
 
             // create a periodic task to pull stocks once every hour after the app has been opened. This
             // is so Widget data stays up to date.
@@ -161,7 +169,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     .setService(StockTaskService.class)
                     .setPeriod(period)
                     .setFlex(flex)
-                    .setTag(periodicTag)
+                    .setTag(PERIODIC_TASK_TAG)
                     .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
                     .setRequiresCharging(false)
                     .build();
