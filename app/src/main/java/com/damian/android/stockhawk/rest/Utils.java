@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.damian.android.stockhawk.data.QuoteColumns;
 import com.damian.android.stockhawk.data.QuoteProvider;
+import com.damian.android.stockhawk.service.StockTaskService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,6 +74,8 @@ public class Utils {
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "String to JSON failed: " + e);
+            StockTaskService.setIsBadResponse(true);
+            return false;
         }
         return true;
     }

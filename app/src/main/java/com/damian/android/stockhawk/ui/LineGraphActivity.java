@@ -55,8 +55,8 @@ public class LineGraphActivity extends AppCompatActivity {
 
         // I believe we can query the cursor in the UI thread since this activity has one UI purpose only:
         // presenting the cursor data to the user.
-        if (intent != null && intent.hasExtra("RecyclerItemStockName")) {
-            String stockName = intent.getExtras().getString("RecyclerItemStockName");
+        if (intent != null && intent.hasExtra(MyStocksActivity.STOCK_NAME_KEY)) {
+            String stockName = intent.getExtras().getString(MyStocksActivity.STOCK_NAME_KEY);
 
             String chartTitle = stockName + " Stock Price Over Time";
             String chartTitleDescription = "Chart name: " + chartTitle;

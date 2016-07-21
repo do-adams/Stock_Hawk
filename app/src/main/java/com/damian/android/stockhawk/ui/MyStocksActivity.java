@@ -43,6 +43,8 @@ import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static final String STOCK_NAME_KEY = "RecyclerItemStockName";
+    public static final String STOCK_SERVICE_TAG_KEY = "tag";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -77,7 +79,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mServiceIntent = new Intent(this, StockIntentService.class);
         if (savedInstanceState == null) {
             // Run the initialize task service so that some stocks appear upon an empty database
-            mServiceIntent.putExtra("tag", "init");
+            mServiceIntent.putExtra(STOCK_SERVICE_TAG_KEY, "init");
             if (isConnected) {
                 startService(mServiceIntent);
             } else {
@@ -97,7 +99,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                         // So much casting makes you feel like a wizard!
                         String stockName = (String) ((TextView) ((LinearLayout) v).getChildAt(0)).getText();
                         Intent intent = new Intent(MyStocksActivity.this, LineGraphActivity.class);
-                        intent.putExtra("RecyclerItemStockName", stockName);
+                        intent.putExtra(STOCK_NAME_KEY, stockName);
                         startActivity(intent);
                     }
                 }));
@@ -129,7 +131,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                         return;
                                     } else {
                                         // Add the stock to DB
-                                        mServiceIntent.putExtra("tag", "add");
+                                        mServiceIntent.putExtra(STOCK_SERVICE_TAG_KEY, "add");
                                         mServiceIntent.putExtra("symbol", input.toString());
                                         startService(mServiceIntent);
                                     }

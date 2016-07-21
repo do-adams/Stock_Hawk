@@ -41,6 +41,13 @@ public class StockTaskService extends GcmTaskService {
     private StringBuilder mStoredSymbols = new StringBuilder();
     private boolean isUpdate;
 
+    // Flag for malformed API server responses.
+    public static boolean isBadResponse;
+
+    public static void setIsBadResponse(boolean value) {
+        isBadResponse = value;
+    }
+
     public StockTaskService() {
     }
 
@@ -125,7 +132,7 @@ public class StockTaskService extends GcmTaskService {
                 getResponse = fetchData(urlString);
                 result = GcmNetworkManager.RESULT_SUCCESS;
 
-                if (Utils.isValidStock(getResponse) == true) {
+                if (Utils.isValidStock(getResponse)) {
                     // If stock name(s) is/are valid, update and cache stock data.
                     try {
                         ContentValues contentValues = new ContentValues();
@@ -135,33 +142,37 @@ public class StockTaskService extends GcmTaskService {
                             mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                                     null, null);
                         }
-                        /*
-                         A better database insertion/update method should be possible.
-                         This database will apparently keep growing bigger and bigger over time
-                         with old redundant data?
-                        */
                         mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                                 Utils.quoteJsonToContentVals(getResponse));
                     } catch (RemoteException | OperationApplicationException e) {
                         Log.e(LOG_TAG, "Error applying batch insert", e);
                     }
                 } else {
-                    // Grabs the UI thread to post "invalid stock" msg.
                     Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(mContext, "Stock not found. Please enter" +
-                                    " a valid stock name!", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    if (isBadResponse) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mContext, "Server issued a bad response" +
+                                        " please try again soon!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        isBadResponse = false; // reset the server response flag for new requests.
+                    } else {
+                        // Grabs the UI thread to post "invalid stock" msg.
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mContext, "Stock not found. Please enter" +
+                                        " a valid stock name!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
         return result;
     }
 
