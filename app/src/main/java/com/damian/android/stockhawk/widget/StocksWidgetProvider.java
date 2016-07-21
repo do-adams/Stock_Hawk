@@ -48,7 +48,7 @@ public class StocksWidgetProvider extends AppWidgetProvider {
             remoteViews.setRemoteAdapter(R.id.list_view, intent);
 
             // Sets the pending intent for launching the LineGraphActivity when
-            // an item (the TextView) of the ListView is tapped by the user.
+            // an item (the stock name) of the ListView is tapped by the user.
             // Must be set separately in this class and the ListViewAdapter class.
             Intent clickIntent = new Intent(context, LineGraphActivity.class);
             PendingIntent clickPendingIntent = PendingIntent.getActivity(context,
