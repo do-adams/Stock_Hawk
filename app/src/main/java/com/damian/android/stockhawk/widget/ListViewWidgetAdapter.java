@@ -62,8 +62,8 @@ public class ListViewWidgetAdapter implements RemoteViewsService.RemoteViewsFact
         mCursor.moveToPosition(position);
         RemoteViews listViewItem = new RemoteViews(mContext.getPackageName(), R.layout.list_item_quote);
 
-        String symbol = mCursor.getString(mCursor.getColumnIndex("symbol"));
-        String bidPrice = mCursor.getString(mCursor.getColumnIndex("bid_price"));
+        String symbol = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.SYMBOL));
+        String bidPrice = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.BIDPRICE));
 
         listViewItem.setTextViewText(R.id.stock_symbol, symbol);
         listViewItem.setTextViewText(R.id.bid_price, bidPrice);
@@ -72,10 +72,10 @@ public class ListViewWidgetAdapter implements RemoteViewsService.RemoteViewsFact
                 + bidPrice + " with a change of: ";
         String change;
         if (Utils.showPercent) {
-            change = mCursor.getString(mCursor.getColumnIndex("percent_change"));
+            change = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE));
             listViewItem.setTextViewText(R.id.change, change);
         } else {
-            change = mCursor.getString(mCursor.getColumnIndex("change"));
+            change = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.CHANGE));
             listViewItem.setTextViewText(R.id.change, change);
         }
         itemContentDescription += change;
