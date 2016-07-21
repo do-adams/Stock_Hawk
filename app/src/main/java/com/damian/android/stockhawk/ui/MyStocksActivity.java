@@ -120,10 +120,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
             @Override
             public void onClick(View v) {
                 if (isConnected) {
-                    new MaterialDialog.Builder(mContext).title(R.string.symbol_search)
-                            .content(R.string.content_test)
+                    new MaterialDialog.Builder(mContext).title(R.string.mat_symbol_title)
+                            .content(R.string.mat_symbol_content)
                             .inputType(InputType.TYPE_CLASS_TEXT)
-                            .input(R.string.input_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
+                            .input(R.string.mat_symbol_input_hint, R.string.mat_symbol_input_prefill, new MaterialDialog.InputCallback() {
                                 @Override
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     // On FAB click, receive user input. Make sure the stock doesn't already exist
@@ -132,9 +132,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                             new String[]{QuoteColumns.SYMBOL}, QuoteColumns.SYMBOL + "= ?",
                                             new String[]{input.toString()}, null);
                                     if (c.getCount() != 0) {
-                                        Toast toast =
-                                                Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
-                                                        Toast.LENGTH_LONG);
+                                        Toast toast = Toast.makeText(MyStocksActivity.this,
+                                                getString(R.string.toast_redundant_stock),
+                                                Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
                                         return;
@@ -179,7 +179,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -188,10 +187,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     public void displayNetworkMsg() {
         new MaterialDialog.Builder(this)
-                .title("Internet Connection Required")
-                .content("This app requires an active Internet connection to be able to access the latest " +
-                        "stock data. Please make sure your device is connected.")
-                .positiveText("OK")
+                .title(getString(R.string.mat_connection_title))
+                .content(getString(R.string.mat_connection_content))
+                .positiveText(getString(R.string.mat_connection_positive_text))
                 .show();
     }
 

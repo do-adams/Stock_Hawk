@@ -15,6 +15,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.damian.android.stockhawk.R;
 import com.damian.android.stockhawk.data.QuoteColumns;
 import com.damian.android.stockhawk.data.QuoteProvider;
 import com.damian.android.stockhawk.rest.Utils;
@@ -155,8 +156,8 @@ public class StockTaskService extends GcmTaskService {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(mContext, "Server issued a bad response" +
-                                        " please try again soon!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, mContext.getString(R.string.toast_bad_response),
+                                        Toast.LENGTH_LONG).show();
                             }
                         });
                         isBadResponse = false; // reset the server response flag for new requests.
@@ -165,8 +166,8 @@ public class StockTaskService extends GcmTaskService {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(mContext, "Stock not found. Please enter" +
-                                        " a valid stock name!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, mContext.getString(R.string.toast_stock_not_found),
+                                        Toast.LENGTH_LONG).show();
                             }
                         });
                     }

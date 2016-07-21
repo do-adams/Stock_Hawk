@@ -68,8 +68,9 @@ public class ListViewWidgetAdapter implements RemoteViewsService.RemoteViewsFact
         listViewItem.setTextViewText(R.id.stock_symbol, symbol);
         listViewItem.setTextViewText(R.id.bid_price, bidPrice);
 
-        String itemContentDescription = "Stock: " + symbol + " is valued at a bid price of: "
-                + bidPrice + " with a change of: ";
+        String itemContentDescription = mContext.getString(R.string.cnt_desc_list_item_stock) + " "
+                + symbol + " " + mContext.getString(R.string.cnt_desc_list_item_bid_price) + " "
+                + bidPrice + " " + mContext.getString(R.string.cnt_desc_list_item_change) + " ";
         String change;
         if (Utils.showPercent) {
             change = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE));

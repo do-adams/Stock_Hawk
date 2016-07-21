@@ -9,7 +9,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="Current stocks"
+        android:contentDescription="@string/cnt_desc_recycler_view"
         />
 
     <com.melnykov.fab.FloatingActionButton
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="Add a new stock to the list"
+        android:contentDescription="@string/cnt_desc_fab"
         android:src="@drawable/ic_add_white_24dp"
         fab:fab_colorNormal="@color/material_blue_500"
         fab:fab_colorPressed="@color/material_blue_600"

@@ -7,6 +7,6 @@
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="Stock Hawk Widget: current stocks"/>
+        android:contentDescription="@string/cnt_desc_list_view_widget"/>
 
 </FrameLayout>

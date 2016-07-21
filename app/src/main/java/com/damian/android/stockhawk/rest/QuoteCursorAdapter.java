@@ -74,8 +74,9 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
             }
         }
 
-        String itemContentDescription = "Stock: " + symbol + " is valued at a bid price of: "
-                + bidPrice + " with a change of: ";
+        String itemContentDescription = mContext.getString(R.string.cnt_desc_list_item_stock) + " "
+                + symbol + " " + mContext.getString(R.string.cnt_desc_list_item_bid_price) + " "
+                + bidPrice + " " + mContext.getString(R.string.cnt_desc_list_item_change) + " ";
         String change;
         if (Utils.showPercent) {
             change = cursor.getString(cursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE));

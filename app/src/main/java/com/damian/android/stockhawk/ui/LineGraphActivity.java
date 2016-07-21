@@ -58,8 +58,8 @@ public class LineGraphActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra(MyStocksActivity.STOCK_NAME_KEY)) {
             String stockName = intent.getExtras().getString(MyStocksActivity.STOCK_NAME_KEY);
 
-            String chartTitle = stockName + " Stock Price Over Time";
-            String chartTitleDescription = "Chart name: " + chartTitle;
+            String chartTitle = stockName + " " + getString(R.string.chart_title_substr);
+            String chartTitleDescription = getString(R.string.cnt_desc_chart_title) + " " + chartTitle;
             mTitleLineChart.setText(chartTitle);
             mTitleLineChart.setContentDescription(chartTitleDescription);
 
@@ -84,9 +84,9 @@ public class LineGraphActivity extends AppCompatActivity {
                 cursor.close();
 
                 // Add values to data set.
-                dataSet.addPoint("200-Days Price Avg", Float.parseFloat(twoHundredDaysAverage));
-                dataSet.addPoint("50-Days Price Avg", Float.parseFloat(fiftyDaysAverage));
-                dataSet.addPoint("Price Today", Float.parseFloat(todaysBidPrice));
+                dataSet.addPoint(getString(R.string.chart_200days_label), Float.parseFloat(twoHundredDaysAverage));
+                dataSet.addPoint(getString(R.string.chart_50days_label), Float.parseFloat(fiftyDaysAverage));
+                dataSet.addPoint(getString(R.string.chart_today_label), Float.parseFloat(todaysBidPrice));
 
                 // Set the appropriate Y axis for the line chart (with a small offset).
                 List<Integer> stockPrices = new ArrayList<>();
@@ -104,10 +104,11 @@ public class LineGraphActivity extends AppCompatActivity {
                 mLineChartView.setAxisBorderValues(min - CHART_AXIS_OFFSET, max + CHART_AXIS_OFFSET);
 
                 // Set the content description.
-                mLineChartView.setContentDescription("Chart of price of stock over time: "
-                        + "Two-hundred days price average: "
-                        + twoHundredDaysAverage + ". Fifty-days price average: "
-                        + fiftyDaysAverage + ". Today's price: " + todaysBidPrice);
+                mLineChartView.setContentDescription(getString(R.string.cnt_desc_chart_overview) + " "
+                        + getString(R.string.cnt_desc_chart_200days_label) + " "
+                        + twoHundredDaysAverage + ". " + getString(R.string.cnt_desc_chart_50days_label)
+                        + " " + fiftyDaysAverage + ". " + getString(R.string.cnt_desc_chart_today_label) + " "
+                        + todaysBidPrice);
 
                 // Prep and display the Line Chart.
                 mLineChartView.addData(dataSet);

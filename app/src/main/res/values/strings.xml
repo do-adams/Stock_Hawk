@@ -1,13 +1,56 @@
 <resources>
-    <string name="app_name">Stock Hawk</string>
-
+    <string name="app_name" translatable="false">Stock Hawk</string>
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_change_units">Change Units</string>
-    <string name="symbol_search">Symbol Search</string>
-    <string name="content_test">Search for a Stock Symbol</string>
-    <string name="input_hint">FB</string>
-    <string name="input_prefill"></string>
-    <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+
+    <!--Toast User Messages -->
+        <string name="toast_redundant_stock">This stock is already saved!</string>
+        <string name="toast_bad_response">Server issued a bad response, please try again soon!</string>
+        <string name="toast_stock_not_found">Stock not found. Please enter a valid stock name!</string>
+    <!---->
+
+    <!--Material Dialog User Messages-->
+        <!--Search For A Stock Feature Dialog-->
+            <string name="mat_symbol_title">Symbol Search</string>
+            <string name="mat_symbol_content">Search for a Stock Symbol</string>
+            <string name="mat_symbol_input_hint">FB</string>
+            <string name="mat_symbol_input_prefill"></string>
+        <!---->
+
+        <!--No Internet Connection Dialog-->
+            <string name="mat_connection_title">Internet Connection Required</string>
+            <string name="mat_connection_content">This app requires an active Internet connection
+                to be able to access the latest stock data. Please make sure your device is connected.</string>
+            <string name="mat_connection_positive_text">OK</string>
+        <!---->
+    <!---->
+
+    <!--LineGraphActivity Strings-->
+        <string name="chart_title_substr">Stock Price Over Time</string>
+        <string name="chart_200days_label">200-Days Price Avg</string>
+        <string name="chart_50days_label">50-Days Price Avg</string>
+        <string name="chart_today_label">Price Today</string>
+    <!---->
+
+    <!-- Layout Content Descriptions-->
+        <string name="cnt_desc_recycler_view">Current stocks</string>
+        <string name="cnt_desc_fab">Add a new stock to the list</string>
+        <string name="cnt_desc_list_view_widget">Stock Hawk Widget: current stocks</string>
+
+        <!--Content Descriptions for LineGraphActivity Chart-->
+            <string name="cnt_desc_chart_title">Chart name:</string>
+            <string name="cnt_desc_chart_overview">Chart of price of stock over time:</string>
+            <string name="cnt_desc_chart_200days_label">Two-hundred days price average:</string>
+            <string name="cnt_desc_chart_50days_label">Fifty-days price average:</string>
+            <string name="cnt_desc_chart_today_label">Today\'s price:</string>
+        <!---->
+
+        <!--Content Descriptions for list items in QuoteCursorAdapter and ListViewWidgetAdapter-->
+            <string name="cnt_desc_list_item_stock">Stock:</string>
+            <string name="cnt_desc_list_item_bid_price">is valued at a bid price of:</string>
+            <string name="cnt_desc_list_item_change">with a change of:</string>
+        <!---->
+    <!---->
 </resources>
