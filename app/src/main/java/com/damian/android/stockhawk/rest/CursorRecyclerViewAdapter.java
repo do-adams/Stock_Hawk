@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
 
+import com.damian.android.stockhawk.data.QuoteColumns;
+
 /**
  * Credit to skyfishjy gist:
  * https://gist.github.com/skyfishjy/443b7448f59be978bc59
@@ -24,7 +26,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     public CursorRecyclerViewAdapter(Context context, Cursor cursor) {
         mCursor = cursor;
         dataIsValid = cursor != null;
-        rowIdColumn = dataIsValid ? mCursor.getColumnIndex("_id") : -1;
+        rowIdColumn = dataIsValid ? mCursor.getColumnIndex(QuoteColumns._ID) : -1;
         mDataSetObserver = new NotifyingDataSetObserver();
         if (dataIsValid) {
             mCursor.registerDataSetObserver(mDataSetObserver);
@@ -83,7 +85,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
             if (mDataSetObserver != null) {
                 mCursor.registerDataSetObserver(mDataSetObserver);
             }
-            rowIdColumn = newCursor.getColumnIndexOrThrow("_id");
+            rowIdColumn = newCursor.getColumnIndexOrThrow(QuoteColumns._ID);
             dataIsValid = true;
             notifyDataSetChanged();
         } else {

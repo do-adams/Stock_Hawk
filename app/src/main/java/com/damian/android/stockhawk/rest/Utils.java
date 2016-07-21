@@ -19,6 +19,19 @@ import java.util.ArrayList;
 
 public class Utils {
 
+    // JSON keys for the Yahoo Finance API request.
+    private static final String QUERY_OBJECT = "query";
+    private static final String COUNT_VALUE = "count";
+    private static final String RESULTS_OBJECT = "results";
+    private static final String QUOTE_ARRAY = "quote";
+    private static final String ASK_VALUE = "Ask";
+    private static final String CHANGE_VALUE = "Change";
+    private static final String SYMBOL_VALUE = "symbol";
+    private static final String BID_VALUE = "Bid";
+    private static final String CHANGE_IN_PERCENT_VALUE = "ChangeinPercent";
+    private static final String FIFTYDAY_MOVING_AVERAGE_VALUE = "FiftydayMovingAverage";
+    private static final String TWO_HUNDREDDAY_MOVING_AVERAGE_VALUE = "TwoHundreddayMovingAverage";
+
     private static String LOG_TAG = Utils.class.getSimpleName();
 
     public static boolean showPercent = true;
@@ -36,22 +49,22 @@ public class Utils {
         try {
             jsonObject = new JSONObject(JSON);
             if (jsonObject != null && jsonObject.length() != 0) {
-                jsonObject = jsonObject.getJSONObject("query");
-                int count = Integer.parseInt(jsonObject.getString("count"));
+                jsonObject = jsonObject.getJSONObject(QUERY_OBJECT);
+                int count = Integer.parseInt(jsonObject.getString(COUNT_VALUE));
 
                 if (count == 1) {
-                    jsonObject = jsonObject.getJSONObject("results")
-                            .getJSONObject("quote");
-                    if (jsonObject.getString("Ask").equals("null")) {
+                    jsonObject = jsonObject.getJSONObject(RESULTS_OBJECT)
+                            .getJSONObject(QUOTE_ARRAY);
+                    if (jsonObject.getString(ASK_VALUE).equals("null")) {
                         return false;
                     }
                 } else {
-                    resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+                    resultsArray = jsonObject.getJSONObject(RESULTS_OBJECT).getJSONArray(QUOTE_ARRAY);
 
                     if (resultsArray != null && resultsArray.length() != 0) {
                         for (int i = 0; i < resultsArray.length(); i++) {
                             jsonObject = resultsArray.getJSONObject(i);
-                            if (jsonObject.getString("Ask").equals("null")) {
+                            if (jsonObject.getString(ASK_VALUE).equals("null")) {
                                 return false;
                             }
                         }
@@ -71,14 +84,14 @@ public class Utils {
         try {
             jsonObject = new JSONObject(JSON);
             if (jsonObject != null && jsonObject.length() != 0) {
-                jsonObject = jsonObject.getJSONObject("query");
-                int count = Integer.parseInt(jsonObject.getString("count"));
+                jsonObject = jsonObject.getJSONObject(QUERY_OBJECT);
+                int count = Integer.parseInt(jsonObject.getString(COUNT_VALUE));
                 if (count == 1) {
-                    jsonObject = jsonObject.getJSONObject("results")
-                            .getJSONObject("quote");
+                    jsonObject = jsonObject.getJSONObject(RESULTS_OBJECT)
+                            .getJSONObject(QUOTE_ARRAY);
                     batchOperations.add(buildBatchOperation(jsonObject));
                 } else {
-                    resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+                    resultsArray = jsonObject.getJSONObject(RESULTS_OBJECT).getJSONArray(QUOTE_ARRAY);
 
                     if (resultsArray != null && resultsArray.length() != 0) {
                         for (int i = 0; i < resultsArray.length(); i++) {
@@ -120,11 +133,11 @@ public class Utils {
         ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
                 QuoteProvider.Quotes.CONTENT_URI);
         try {
-            String change = jsonObject.getString("Change");
-            builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString("symbol"));
-            builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString("Bid")));
+            String change = jsonObject.getString(CHANGE_VALUE);
+            builder.withValue(QuoteColumns.SYMBOL, jsonObject.getString(SYMBOL_VALUE));
+            builder.withValue(QuoteColumns.BIDPRICE, truncateBidPrice(jsonObject.getString(BID_VALUE)));
             builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
-                    jsonObject.getString("ChangeinPercent"), true));
+                    jsonObject.getString(CHANGE_IN_PERCENT_VALUE), true));
             builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
             builder.withValue(QuoteColumns.ISCURRENT, 1);
             if (change.charAt(0) == '-') {
@@ -133,9 +146,9 @@ public class Utils {
                 builder.withValue(QuoteColumns.ISUP, 1);
             }
             builder.withValue(QuoteColumns.FIFTY_DAYS_PRICE_AVERAGE,
-                    truncateBidPrice(jsonObject.getString("FiftydayMovingAverage")));
+                    truncateBidPrice(jsonObject.getString(FIFTYDAY_MOVING_AVERAGE_VALUE)));
             builder.withValue(QuoteColumns.TWO_HUNDRED_DAYS_PRICE_AVERAGE,
-                    truncateBidPrice(jsonObject.getString("TwoHundreddayMovingAverage")));
+                    truncateBidPrice(jsonObject.getString(TWO_HUNDREDDAY_MOVING_AVERAGE_VALUE)));
 
         } catch (JSONException e) {
             e.printStackTrace();
