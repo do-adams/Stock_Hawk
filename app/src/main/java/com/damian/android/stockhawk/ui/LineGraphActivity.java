@@ -58,7 +58,10 @@ public class LineGraphActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra("RecyclerItemStockName")) {
             String stockName = intent.getExtras().getString("RecyclerItemStockName");
 
-            mTitleLineChart.setText(stockName + " Stock Price Over Time");
+            String chartTitle = stockName + " Stock Price Over Time";
+            String chartTitleDescription = "Chart name: " + chartTitle;
+            mTitleLineChart.setText(chartTitle);
+            mTitleLineChart.setContentDescription(chartTitleDescription);
 
             Cursor cursor = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                     null, null,
@@ -71,7 +74,8 @@ public class LineGraphActivity extends AppCompatActivity {
                     cursor.moveToPrevious();
                 }
 
-                Log.d(LOG_TAG, "Name of Stock being displayed: " + cursor.getString(cursor.getColumnIndex(QuoteColumns.SYMBOL)));
+                Log.d(LOG_TAG, "Name of Stock being displayed: "
+                        + cursor.getString(cursor.getColumnIndex(QuoteColumns.SYMBOL)));
 
                 // Get stock price values from the db.
                 String todaysBidPrice = cursor.getString(cursor.getColumnIndex(QuoteColumns.BIDPRICE));
@@ -98,6 +102,12 @@ public class LineGraphActivity extends AppCompatActivity {
                         max = n;
                 }
                 mLineChartView.setAxisBorderValues(min - CHART_AXIS_OFFSET, max + CHART_AXIS_OFFSET);
+
+                // Set the content description.
+                mLineChartView.setContentDescription("Chart of price of stock over time: "
+                        + "Two-hundred days price average: "
+                        + twoHundredDaysAverage + ". Fifty-days price average: "
+                        + fiftyDaysAverage + ". Today's price: " + todaysBidPrice);
 
                 // Prep and display the Line Chart.
                 mLineChartView.addData(dataSet);

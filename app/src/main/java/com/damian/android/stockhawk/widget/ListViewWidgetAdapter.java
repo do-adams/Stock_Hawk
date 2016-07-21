@@ -62,14 +62,24 @@ public class ListViewWidgetAdapter implements RemoteViewsService.RemoteViewsFact
         mCursor.moveToPosition(position);
         RemoteViews listViewItem = new RemoteViews(mContext.getPackageName(), R.layout.list_item_quote);
 
-        listViewItem.setTextViewText(R.id.stock_symbol, mCursor.getString(mCursor.getColumnIndex("symbol")));
-        listViewItem.setTextViewText(R.id.bid_price, mCursor.getString(mCursor.getColumnIndex("bid_price")));
+        String symbol = mCursor.getString(mCursor.getColumnIndex("symbol"));
+        String bidPrice = mCursor.getString(mCursor.getColumnIndex("bid_price"));
 
+        listViewItem.setTextViewText(R.id.stock_symbol, symbol);
+        listViewItem.setTextViewText(R.id.bid_price, bidPrice);
+
+        String itemContentDescription = "Stock: " + symbol + " is valued at a bid price of: "
+                + bidPrice + " with a change of: ";
+        String change;
         if (Utils.showPercent) {
-            listViewItem.setTextViewText(R.id.change, mCursor.getString(mCursor.getColumnIndex("percent_change")));
+            change = mCursor.getString(mCursor.getColumnIndex("percent_change"));
+            listViewItem.setTextViewText(R.id.change, change);
         } else {
-            listViewItem.setTextViewText(R.id.change, mCursor.getString(mCursor.getColumnIndex("change")));
+            change = mCursor.getString(mCursor.getColumnIndex("change"));
+            listViewItem.setTextViewText(R.id.change, change);
         }
+        itemContentDescription += change;
+        listViewItem.setContentDescription(R.layout.list_item_quote, itemContentDescription);
 
         return listViewItem;
     }

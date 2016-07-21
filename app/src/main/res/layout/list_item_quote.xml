@@ -11,6 +11,8 @@
               android:paddingStart="16dp"
     >
 
+    <!--Content descriptions for this list item are set programmatically by the QuoteCursorAdapter-->
+
     <TextView
         android:id="@+id/stock_symbol"
         style="@style/StockSymbolTextStyle"

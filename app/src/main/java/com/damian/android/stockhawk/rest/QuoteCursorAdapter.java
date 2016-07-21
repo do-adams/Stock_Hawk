@@ -49,8 +49,12 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor) {
-        viewHolder.symbol.setText(cursor.getString(cursor.getColumnIndex("symbol")));
-        viewHolder.bidPrice.setText(cursor.getString(cursor.getColumnIndex("bid_price")));
+        String symbol = cursor.getString(cursor.getColumnIndex("symbol"));
+        String bidPrice = cursor.getString(cursor.getColumnIndex("bid_price"));
+
+        viewHolder.symbol.setText(symbol);
+        viewHolder.bidPrice.setText(bidPrice);
+
         int sdk = Build.VERSION.SDK_INT;
         if (cursor.getInt(cursor.getColumnIndex("is_up")) == 1) {
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
@@ -69,11 +73,19 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
                         mContext.getResources().getDrawable(R.drawable.percent_change_pill_red));
             }
         }
+
+        String itemContentDescription = "Stock: " + symbol + " is valued at a bid price of: "
+                + bidPrice + " with a change of: ";
+        String change;
         if (Utils.showPercent) {
-            viewHolder.change.setText(cursor.getString(cursor.getColumnIndex("percent_change")));
+            change = cursor.getString(cursor.getColumnIndex("percent_change"));
+            viewHolder.change.setText(change);
         } else {
-            viewHolder.change.setText(cursor.getString(cursor.getColumnIndex("change")));
+            change = cursor.getString(cursor.getColumnIndex("change"));
+            viewHolder.change.setText(change);
         }
+        itemContentDescription += change;
+        viewHolder.getItemView().setContentDescription(itemContentDescription);
     }
 
     @Override
@@ -116,6 +128,14 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
 
         @Override
         public void onClick(View v) {
+        }
+
+        /**
+         * Gets the item view from
+         * the viewholder.
+         */
+        public View getItemView() {
+            return itemView;
         }
     }
 }

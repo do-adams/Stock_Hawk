@@ -8,6 +8,8 @@
               android:paddingEnd="24dp"
               android:paddingStart="24dp">
 
+    <!--Content descriptions for this activity are set programmatically by LineGraphActivity-->
+
     <TextView
         android:id="@+id/title_linechart"
         android:layout_width="match_parent"
