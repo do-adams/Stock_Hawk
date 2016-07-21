@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2016 Damián Adams
+ */
+
 package com.damian.android.stockhawk.widget;
 
 import android.appwidget.AppWidgetManager;
@@ -11,6 +15,9 @@ import android.widget.RemoteViews;
 
 import com.damian.android.stockhawk.R;
 
+/**
+ * An implementation of the AppWidgetProvider class for the Stock Hawk widget.
+ */
 public class StocksWidgetProvider extends AppWidgetProvider {
     private static final String LOG_TAG = StocksWidgetProvider.class.getSimpleName();
     public static final String UPDATE_STOCK_WIDGET_ACTION = "android.appwidget.action.APPWIDGET_UPDATE";

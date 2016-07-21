@@ -38,11 +38,11 @@ public class Utils {
     public static boolean showPercent = true;
 
     /**
-     * Performs a check on the Yahoo Stock JSON data
-     * to determine whether the user-generated stock is indeed a valid stock.
+     * Performs a check on the online server API response
+     * to determine whether it contains valid stock data.
      * Returns true if valid or false if invalid.
      */
-    public static boolean isValidStock(String JSON) {
+    public static boolean isValidResponse(String JSON) {
         JSONObject jsonObject = null;
         JSONArray resultsArray = null;
 

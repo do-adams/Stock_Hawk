@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2016 Damián Adams
+ */
+
 package com.damian.android.stockhawk.widget;
 
 import android.content.Context;
@@ -11,6 +15,9 @@ import com.damian.android.stockhawk.data.QuoteColumns;
 import com.damian.android.stockhawk.data.QuoteProvider;
 import com.damian.android.stockhawk.rest.Utils;
 
+/**
+ * The adapter in charge of populating the views for the Stock Hawk ListView Widget.
+ */
 public class ListViewWidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String LOG_TAG = ListViewWidgetAdapter.class.getSimpleName();

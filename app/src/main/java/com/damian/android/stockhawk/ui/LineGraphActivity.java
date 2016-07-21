@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Udacity, Inc. and Damián Adams
+ * Copyright (C) 2016 Damián Adams
  */
 
 package com.damian.android.stockhawk.ui;
@@ -53,7 +53,7 @@ public class LineGraphActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        // I believe we can query the cursor in the UI thread since this activity has one UI purpose only:
+        // We can query the cursor in the UI thread since this activity has one UI purpose only:
         // presenting the cursor data to the user.
         if (intent != null && intent.hasExtra(MyStocksActivity.STOCK_NAME_KEY)) {
             String stockName = intent.getExtras().getString(MyStocksActivity.STOCK_NAME_KEY);

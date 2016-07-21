@@ -137,7 +137,7 @@ public class StockTaskService extends GcmTaskService {
                 getResponse = fetchData(urlString);
                 result = GcmNetworkManager.RESULT_SUCCESS;
 
-                if (Utils.isValidStock(getResponse)) {
+                if (Utils.isValidResponse(getResponse)) {
                     // If stock name(s) is/are valid, update and cache stock data.
                     try {
                         ContentValues contentValues = new ContentValues();
@@ -149,35 +149,12 @@ public class StockTaskService extends GcmTaskService {
                         }
                         mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                                 Utils.quoteJsonToContentVals(getResponse));
-
-                        // Send a broadcast to update the Stock Hawk widget(s).
-                        Intent updateWidget = new Intent(mContext, StocksWidgetProvider.class);
-                        updateWidget.setAction(StocksWidgetProvider.UPDATE_STOCK_WIDGET_ACTION);
-                        mContext.sendBroadcast(updateWidget);
+                        sendUpdateBroadcastToWidget();
                     } catch (RemoteException | OperationApplicationException e) {
                         Log.e(LOG_TAG, "Error applying batch insert", e);
                     }
                 } else {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    if (isBadResponse) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(mContext, mContext.getString(R.string.toast_bad_response),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        isBadResponse = false; // reset the server response flag for new requests.
-                    } else {
-                        // Grabs the UI thread to post "invalid stock" msg.
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(mContext, mContext.getString(R.string.toast_stock_not_found),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
+                    inCaseOfInvalidResponse();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -186,4 +163,42 @@ public class StockTaskService extends GcmTaskService {
         return result;
     }
 
+    /**
+     * Fires off a broadcast to update the Stock Hawk Widget.
+     * Should be used only when the database has been updated
+     * with new stock data.
+     */
+    private void sendUpdateBroadcastToWidget() {
+        // Send a broadcast to update the Stock Hawk widget(s).
+        Intent updateWidget = new Intent(mContext, StocksWidgetProvider.class);
+        updateWidget.setAction(StocksWidgetProvider.UPDATE_STOCK_WIDGET_ACTION);
+        mContext.sendBroadcast(updateWidget);
+    }
+
+    /**
+     * Handles cases where the service receives either a bad or invalid response
+     * from the online API server.
+     */
+    private void inCaseOfInvalidResponse() {
+        // Grabs the UI thread to post "invalid stock" msg.
+        Handler handler = new Handler(Looper.getMainLooper());
+        if (isBadResponse) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_bad_response),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+            isBadResponse = false; // reset the server response flag for new requests.
+        } else {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_stock_not_found),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
 }
