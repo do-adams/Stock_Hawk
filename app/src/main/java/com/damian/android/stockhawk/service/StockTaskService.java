@@ -6,6 +6,7 @@ package com.damian.android.stockhawk.service;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -20,6 +21,7 @@ import com.damian.android.stockhawk.data.QuoteColumns;
 import com.damian.android.stockhawk.data.QuoteProvider;
 import com.damian.android.stockhawk.rest.Utils;
 import com.damian.android.stockhawk.ui.MyStocksActivity;
+import com.damian.android.stockhawk.widget.StocksWidgetProvider;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -147,6 +149,11 @@ public class StockTaskService extends GcmTaskService {
                         }
                         mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
                                 Utils.quoteJsonToContentVals(getResponse));
+
+                        // Send a broadcast to update the Stock Hawk widget(s).
+                        Intent updateWidget = new Intent(mContext, StocksWidgetProvider.class);
+                        updateWidget.setAction(StocksWidgetProvider.UPDATE_STOCK_WIDGET_ACTION);
+                        mContext.sendBroadcast(updateWidget);
                     } catch (RemoteException | OperationApplicationException e) {
                         Log.e(LOG_TAG, "Error applying batch insert", e);
                     }
