@@ -4,6 +4,7 @@
 
 package com.damian.android.stockhawk.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.damian.android.stockhawk.R;
+import com.damian.android.stockhawk.ui.LineGraphActivity;
 
 /**
  * An implementation of the AppWidgetProvider class for the Stock Hawk widget.
@@ -44,6 +46,14 @@ public class StocksWidgetProvider extends AppWidgetProvider {
 
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.stocks_widget);
             remoteViews.setRemoteAdapter(R.id.list_view, intent);
+
+            // Sets the pending intent for launching the LineGraphActivity when
+            // an item (the TextView) of the ListView is tapped by the user.
+            // Must be set separately in this class and the ListViewAdapter class.
+            Intent clickIntent = new Intent(context, LineGraphActivity.class);
+            PendingIntent clickPendingIntent = PendingIntent.getActivity(context,
+                    0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setPendingIntentTemplate(R.id.list_view, clickPendingIntent);
 
             appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
         }

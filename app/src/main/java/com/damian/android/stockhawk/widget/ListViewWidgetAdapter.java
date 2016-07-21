@@ -14,6 +14,8 @@ import com.damian.android.stockhawk.R;
 import com.damian.android.stockhawk.data.QuoteColumns;
 import com.damian.android.stockhawk.data.QuoteProvider;
 import com.damian.android.stockhawk.rest.Utils;
+import com.damian.android.stockhawk.ui.LineGraphActivity;
+import com.damian.android.stockhawk.ui.MyStocksActivity;
 
 /**
  * The adapter in charge of populating the views for the Stock Hawk ListView Widget.
@@ -88,6 +90,12 @@ public class ListViewWidgetAdapter implements RemoteViewsService.RemoteViewsFact
         }
         itemContentDescription += change;
         listViewItem.setContentDescription(R.layout.list_item_quote, itemContentDescription);
+
+        // Set the intent for launching the LineGraphActivity
+        // for the TextView of the item layout
+        Intent intent = new Intent(mContext, LineGraphActivity.class);
+        intent.putExtra(MyStocksActivity.STOCK_NAME_KEY, symbol);
+        listViewItem.setOnClickFillInIntent(R.id.stock_symbol, intent);
 
         return listViewItem;
     }
