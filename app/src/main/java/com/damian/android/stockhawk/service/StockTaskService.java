@@ -41,7 +41,7 @@ public class StockTaskService extends GcmTaskService {
     private StringBuilder mStoredSymbols = new StringBuilder();
     private boolean isUpdate;
 
-    // Flag for malformed API server responses.
+    // Flag in case of rare malformed API server response.
     public static boolean isBadResponse;
 
     public static void setIsBadResponse(boolean value) {
