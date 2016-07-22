@@ -26,7 +26,7 @@ stock data, and it was up to me to:
 
 I believe I accomplished all of these and more. Throughout the undertaking of this project I strove to build upon and improve the
 logic and design of the codebase and respect the original spirit of the code, to the end that anyone familiar with the original project
-can read over my iteration effortlessly and notice the improvements in a very logical and natural manner.
+can go over my iteration effortlessly and follow the improvements in a very natural way.
 
 # Getting Started 
 
