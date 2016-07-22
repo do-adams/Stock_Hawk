@@ -35,7 +35,7 @@ public class Utils {
 
     private static String LOG_TAG = Utils.class.getSimpleName();
 
-    public static boolean showPercent = true;
+    public static boolean mShowPercent = true;
 
     /**
      * Performs a check on the online server API response

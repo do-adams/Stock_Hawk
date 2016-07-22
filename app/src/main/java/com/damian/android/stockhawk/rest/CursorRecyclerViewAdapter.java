@@ -19,16 +19,16 @@ import com.damian.android.stockhawk.data.QuoteColumns;
 public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
     private static final String LOG_TAG = CursorRecyclerViewAdapter.class.getSimpleName();
     private Cursor mCursor;
-    private boolean dataIsValid;
-    private int rowIdColumn;
+    private boolean mDataIsValid;
+    private int mRowIdColumn;
     private DataSetObserver mDataSetObserver;
 
     public CursorRecyclerViewAdapter(Context context, Cursor cursor) {
         mCursor = cursor;
-        dataIsValid = cursor != null;
-        rowIdColumn = dataIsValid ? mCursor.getColumnIndex(QuoteColumns._ID) : -1;
+        mDataIsValid = cursor != null;
+        mRowIdColumn = mDataIsValid ? mCursor.getColumnIndex(QuoteColumns._ID) : -1;
         mDataSetObserver = new NotifyingDataSetObserver();
-        if (dataIsValid) {
+        if (mDataIsValid) {
             mCursor.registerDataSetObserver(mDataSetObserver);
         }
     }
@@ -39,7 +39,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        if (dataIsValid && mCursor != null) {
+        if (mDataIsValid && mCursor != null) {
             return mCursor.getCount();
         }
         return 0;
@@ -47,8 +47,8 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
 
     @Override
     public long getItemId(int position) {
-        if (dataIsValid && mCursor != null && mCursor.moveToPosition(position)) {
-            return mCursor.getLong(rowIdColumn);
+        if (mDataIsValid && mCursor != null && mCursor.moveToPosition(position)) {
+            return mCursor.getLong(mRowIdColumn);
         }
         return 0;
     }
@@ -62,7 +62,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(VH viewHolder, int position) {
-        if (!dataIsValid) {
+        if (!mDataIsValid) {
             throw new IllegalStateException("This should only be called when Cursor is valid");
         }
         if (!mCursor.moveToPosition(position)) {
@@ -85,12 +85,12 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
             if (mDataSetObserver != null) {
                 mCursor.registerDataSetObserver(mDataSetObserver);
             }
-            rowIdColumn = newCursor.getColumnIndexOrThrow(QuoteColumns._ID);
-            dataIsValid = true;
+            mRowIdColumn = newCursor.getColumnIndexOrThrow(QuoteColumns._ID);
+            mDataIsValid = true;
             notifyDataSetChanged();
         } else {
-            rowIdColumn = -1;
-            dataIsValid = false;
+            mRowIdColumn = -1;
+            mDataIsValid = false;
             notifyDataSetChanged();
         }
         return oldCursor;
@@ -100,14 +100,14 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
         @Override
         public void onChanged() {
             super.onChanged();
-            dataIsValid = true;
+            mDataIsValid = true;
             notifyDataSetChanged();
         }
 
         @Override
         public void onInvalidated() {
             super.onInvalidated();
-            dataIsValid = false;
+            mDataIsValid = false;
             notifyDataSetChanged();
         }
     }

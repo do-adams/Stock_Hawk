@@ -37,6 +37,8 @@ import com.damian.android.stockhawk.rest.Utils;
 import com.damian.android.stockhawk.service.StockIntentService;
 import com.damian.android.stockhawk.service.StockTaskService;
 import com.damian.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
@@ -55,6 +57,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     // Tag for the Periodic Task for GCM.
     public static final String PERIODIC_TASK_TAG = "periodic";
 
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -69,7 +73,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
     private Cursor mCursor;
-    boolean isConnected;
+    boolean mIsConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +83,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        isConnected = activeNetwork != null &&
+        mIsConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         setContentView(R.layout.activity_my_stocks);
 
@@ -89,7 +93,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         if (savedInstanceState == null) {
             // Run the initialize task service so that some stocks appear upon an empty database
             mServiceIntent.putExtra(STOCK_SERVICE_TAG_KEY, STOCK_SERVICE_INIT_VALUE);
-            if (isConnected) {
+            if (mIsConnected) {
                 startService(mServiceIntent);
             } else {
                 displayNetworkMsg();
@@ -119,7 +123,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isConnected) {
+                if (mIsConnected) {
                     new MaterialDialog.Builder(mContext).title(R.string.mat_symbol_title)
                             .content(R.string.mat_symbol_content)
                             .inputType(InputType.TYPE_CLASS_TEXT)
@@ -159,7 +163,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mItemTouchHelper.attachToRecyclerView(recyclerView);
 
         mTitle = getTitle();
-        if (isConnected) {
+        if (mIsConnected && checkPlayServices()) {
             long period = 3600L;
             long flex = 10L;
 
@@ -193,6 +197,23 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 .show();
     }
 
+    /**
+     * Checks the device to make sure it has the Google Play Services API.
+     * If it doesn't it alerts the user to download it on the Play Store.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability googleApi = GoogleApiAvailability.getInstance();
+        int result = googleApi.isGooglePlayServicesAvailable(this);
+        if (result != ConnectionResult.SUCCESS) {
+            if (googleApi.isUserResolvableError(result)) {
+                googleApi.getErrorDialog(this, result,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            }
+            return false;
+        }
+        return true;
+    }
+
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -216,7 +237,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
         if (id == R.id.action_change_units) {
             // this is for changing stock changes from percent value to dollar value
-            Utils.showPercent = !Utils.showPercent;
+            Utils.mShowPercent = !Utils.mShowPercent;
             this.getContentResolver().notifyChange(QuoteProvider.Quotes.CONTENT_URI, null);
         }
 

@@ -81,7 +81,7 @@ public class ListViewWidgetAdapter implements RemoteViewsService.RemoteViewsFact
                 + symbol + " " + mContext.getString(R.string.cnt_desc_list_item_bid_price) + " "
                 + bidPrice + " " + mContext.getString(R.string.cnt_desc_list_item_change) + " ";
         String change;
-        if (Utils.showPercent) {
+        if (Utils.mShowPercent) {
             change = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE));
             listViewItem.setTextViewText(R.id.change, change);
         } else {

@@ -43,13 +43,13 @@ public class StockTaskService extends GcmTaskService {
     private OkHttpClient client = new OkHttpClient();
     private Context mContext;
     private StringBuilder mStoredSymbols = new StringBuilder();
-    private boolean isUpdate;
+    private boolean mIsUpdate;
 
     // Flag in case of rare malformed API server response.
-    public static boolean isBadResponse;
+    private static boolean mIsBadResponse;
 
     public static void setIsBadResponse(boolean value) {
-        isBadResponse = value;
+        mIsBadResponse = value;
     }
 
     public StockTaskService() {
@@ -85,7 +85,7 @@ public class StockTaskService extends GcmTaskService {
         }
         if (params.getTag().equals(MyStocksActivity.STOCK_SERVICE_INIT_VALUE)
                 || params.getTag().equals(MyStocksActivity.PERIODIC_TASK_TAG)) {
-            isUpdate = true;
+            mIsUpdate = true;
             initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                     new String[]{"Distinct " + QuoteColumns.SYMBOL}, null,
                     null, null);
@@ -113,7 +113,7 @@ public class StockTaskService extends GcmTaskService {
                 }
             }
         } else if (params.getTag().equals(MyStocksActivity.STOCK_SERVICE_ADD_VALUE)) {
-            isUpdate = false;
+            mIsUpdate = false;
             // get symbol from params.getExtra and build query
             String stockInput = params.getExtras().getString(MyStocksActivity.STOCK_SERVICE_SYMBOL_KEY);
             try {
@@ -142,7 +142,7 @@ public class StockTaskService extends GcmTaskService {
                     try {
                         ContentValues contentValues = new ContentValues();
                         // update ISCURRENT to 0 (false) so new data is current
-                        if (isUpdate) {
+                        if (mIsUpdate) {
                             contentValues.put(QuoteColumns.ISCURRENT, 0);
                             mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
                                     null, null);
@@ -182,7 +182,7 @@ public class StockTaskService extends GcmTaskService {
     private void inCaseOfInvalidResponse() {
         // Grabs the UI thread to post "invalid stock" msg.
         Handler handler = new Handler(Looper.getMainLooper());
-        if (isBadResponse) {
+        if (mIsBadResponse) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -190,7 +190,7 @@ public class StockTaskService extends GcmTaskService {
                             Toast.LENGTH_LONG).show();
                 }
             });
-            isBadResponse = false; // reset the server response flag for new requests.
+            mIsBadResponse = false; // reset the server response flag for new requests.
         } else {
             handler.post(new Runnable() {
                 @Override

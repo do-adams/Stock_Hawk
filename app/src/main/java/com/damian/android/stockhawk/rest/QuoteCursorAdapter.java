@@ -30,8 +30,8 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         implements ItemTouchHelperAdapter {
 
     private static Context mContext;
-    private static Typeface robotoLight;
-    private boolean isPercent;
+    private static Typeface mRobotoLight;
+    private boolean mIsPercent;
 
     public QuoteCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
@@ -40,7 +40,7 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        robotoLight = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto-Light.ttf");
+        mRobotoLight = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto-Light.ttf");
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_quote, parent, false);
         ViewHolder vh = new ViewHolder(itemView);
@@ -78,7 +78,7 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
                 + symbol + " " + mContext.getString(R.string.cnt_desc_list_item_bid_price) + " "
                 + bidPrice + " " + mContext.getString(R.string.cnt_desc_list_item_change) + " ";
         String change;
-        if (Utils.showPercent) {
+        if (Utils.mShowPercent) {
             change = cursor.getString(cursor.getColumnIndex(QuoteColumns.PERCENT_CHANGE));
             viewHolder.change.setText(change);
         } else {
@@ -112,7 +112,7 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
         public ViewHolder(View itemView) {
             super(itemView);
             symbol = (TextView) itemView.findViewById(R.id.stock_symbol);
-            symbol.setTypeface(robotoLight);
+            symbol.setTypeface(mRobotoLight);
             bidPrice = (TextView) itemView.findViewById(R.id.bid_price);
             change = (TextView) itemView.findViewById(R.id.change);
         }
