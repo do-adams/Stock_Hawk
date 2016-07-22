@@ -12,8 +12,7 @@ leaving your sight!
 Built during July 2016 as part of completing the [Advanced Android Development](https://www.udacity.com/course/advanced-android-app-development--ud855)
 course at [Udacity](https://www.udacity.com/), this project represents a major iteration on the original 
 [Stock Hawk Udacity Application](https://github.com/udacity/StockHawk). As a solo developer, I was presented with a
-functional but unfinished and unstable version of the application that uses the (hidden) Yahoo Finance API to fetch
-stock data, and it was up to me to:
+functional but unfinished and unstable version of the application that uses the (hidden) Yahoo Finance API and Google Cloud Messaging to fetch stock data, and it was up to me to:
 
   * Present the user with a graphical chart that describes bid price stock history in a clear and informative manner.
   * Fix a major bug issue in which an invalid stock search caused the application to crash.
