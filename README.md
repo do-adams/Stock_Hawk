@@ -17,7 +17,7 @@ functional but unfinished and unstable version of the application that uses the 
   * Present the user with a graphical chart that describes bid price stock history in a clear and informative manner.
   * Fix a major bug issue in which an invalid stock search caused the application to crash.
   * Add material design alert dialogs to notify the user in the event of a lost connection and outdated stock data.
-  * Create and wire a responsive widget that allows the user to enjoy fresh, periodically-updated stock data in his home screen.
+  * Create and wire a responsive widget that allows the user to enjoy fresh, periodically-updated stock data on his home screen.
   * Implement RTL layout mirroring support for different user languages. 
   * Provide content descriptions for all UI elements and stock data, for the benefit of sight-impaired users.
   * Extract and refactor the usage of strings and string resources throughout the code, to allow for 
