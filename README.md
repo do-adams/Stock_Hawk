@@ -5,7 +5,7 @@ Take stock of your financials, anywhere you go - with Android.
 
 Whether you're feeling bullish or bearish this week, Stock Hawk is with you. Get the latest updates on your favorite stocks,
 see bid prices over time, and open up some space on your home screen because this time your stocks are coming with you, and they're not
-leaving your sight! 
+leaving your sight.
 
 # Behind the Scenes
 
