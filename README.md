@@ -1,5 +1,5 @@
 # Stock Hawk
-Take stock of your financials, anywhere you go - now on Android.
+Take stock of your financials, anywhere you go - with Android.
 
 ![Stock Hawk Preview Image](/Stock Hawk Preview Image.png?raw=true)
 
