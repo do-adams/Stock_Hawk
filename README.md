@@ -30,7 +30,7 @@ can go over my iteration effortlessly and follow the improvements in a very natu
 # Getting Started 
 
 Before attempting to build and run the project and in order for the Google Cloud Messaging service to work properly, 
-you should provide your own "google-services.json" configuration file in your "app/" or "mobile/" directory. 
+you should provide your own `google-services.json` configuration file in your `app/` or `mobile/` directory. 
 More info about this [here](https://developers.google.com/cloud-messaging/android/client) and [here](https://developers.google.com/cloud-messaging/network-manager).
 
 # Libraries
